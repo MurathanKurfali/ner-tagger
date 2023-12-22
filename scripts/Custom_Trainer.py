@@ -10,11 +10,12 @@ import torch
 import torch.nn.functional as F
 
 class FocalLoss(torch.nn.Module):
-    def __init__(self, weight=None, gamma=2., reduction='mean'):
+    def __init__(self, weight=None, gamma=2., reduction='mean', ignore_index= -100):
         super(FocalLoss, self).__init__()
         self.weight = weight
         self.gamma = gamma
         self.reduction = reduction
+        self.ignore_index = ignore_index
 
     def forward(self, inputs, targets):
         BCE_loss = F.cross_entropy(inputs, targets, reduction='none', weight=self.weight)
