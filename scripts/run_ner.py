@@ -379,7 +379,7 @@ def main():
         # Weights are inversely proportional to the frequencies, encouraging the model to pay more attention to less common tags.
 
         class_weights = class_weight.compute_class_weight(class_weight='balanced',
-                                                          classes=np.unique(all_labels),
+                                                          classes=label_list,
                                                           y=all_labels)
         class_weights = torch.Tensor(class_weights).to(training_args.device)
 
