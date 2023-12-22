@@ -1,11 +1,11 @@
 import json
+import argparse
 from collections import defaultdict
-from sklearn.metrics import f1_score
 import os
 import evaluate
+import pandas as pd
 
 
-# Function to read the gold data
 def read_gold_data(file_path):
     gold_tags = []
     with open(file_path, 'r') as file:
@@ -15,7 +15,6 @@ def read_gold_data(file_path):
     return gold_tags
 
 
-# Function to read predictions
 def read_predictions(dir_path):
     predictions = defaultdict(list)
     for root, dirs, files in os.walk(dir_path):
@@ -28,54 +27,58 @@ def read_predictions(dir_path):
     return predictions
 
 
-# Calculate F1 score per tag
 def calculate_scores_per_tag(true_labels, true_predictions):
     metric = evaluate.load("seqeval")
     final_results = defaultdict(list)
 
     for k, v in true_predictions.items():
         results = metric.compute(predictions=v, references=true_labels)
-        # Unpack nested dictionaries
         for key, value in results.items():
             if isinstance(value, dict):
                 for n, v in value.items():
                     final_results[f"{key}_{n}"].append(v)
             else:
                 final_results[key].append(value)
-    print(final_results)
     mean_scores_dict = {key: sum(value) / len(value) for key, value in final_results.items()}
 
-    return mean_scores_dict
-
-
-# Main function to process everything
-def main():
-    gold_data_path = "../data/system_a/test.json"
-    predictions_dir_path = '/home/murathan/PycharmProjects/rise/X'  # Update this with the correct path
-
-    gold_tags = read_gold_data(gold_data_path)
-    predictions = read_predictions(predictions_dir_path)
-    scores_dict = calculate_scores_per_tag(gold_tags, predictions)
-
-
-    # Restructure data
-    restructured_data = {}
-    for key, value in scores_dict.items():
+    structured_scores = {}
+    for key, value in mean_scores_dict.items():
         tag, metric = key.rsplit('_', 1)
-        if metric == "number": continue
-        if metric not in restructured_data:
-            restructured_data[metric] = {}
-        restructured_data[metric][tag] = value
+        #if metric == "number": continue
+        if metric not in structured_scores:
+            structured_scores[metric] = {}
+        structured_scores[metric][tag] = value
 
-    # Create Markdown table
-    tags = sorted(set(key.rsplit('_', 1)[0] for key in scores_dict.keys()))
-    print(tags)
-    markdown_table = "| Metric | " + " | ".join(tags) + " |\n| --- |" + " --- |" * len(tags) + "\n"
+    return structured_scores
 
-    for metric in ['precision', 'recall', 'f1']:
-        markdown_table += f"| {metric.capitalize()} | " + " | ".join( f"{restructured_data[metric].get(tag, 'N/A'):.3f}" for tag in tags) + " |\n"
-
-    print(markdown_table)
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='NER Tagging Evaluation')
+    parser.add_argument('saved_model_dir', type=str, help='Directory of saved model')
+    parser.add_argument('gold_data_dir', type=str, help='Directory of gold data')
+    parser.add_argument('transformer_model', type=str, help='Transformer model name')
+    parser.add_argument('output_format', type=str, default='markdown', nargs='?', choices=['csv', 'html', "markdown"],
+                        help='Output format for the results (default: html)')
+    args = parser.parse_args()
+
+    for system_version in ["a", "b"]:
+        predictions_dir_path = os.path.join(args.saved_model_dir, f"system_{system_version}")
+        gold_data_path = f"{args.gold_data_dir}/system_{system_version}/test.json"
+
+        gold_tags = read_gold_data(gold_data_path)
+        predictions = read_predictions(predictions_dir_path)
+        run_count = len(predictions)
+        scores_dict = calculate_scores_per_tag(gold_tags, predictions)
+        output_file_name = f"system-{system_version}_{args.transformer_model}_{run_count}.{args.output_format}"
+
+        df = pd.DataFrame.from_dict(scores_dict, orient='index').T
+
+        if args.output_format == 'csv':
+            df.to_csv(output_file_name, index=True)
+        elif args.output_format == 'html':
+            df.to_html(output_file_name, index=True)
+        elif args.output_format == 'markdown':
+            markdown_table = df.to_markdown(index=True)
+            # Write to file
+            with open(output_file_name, 'w') as file:
+                file.write(markdown_table)

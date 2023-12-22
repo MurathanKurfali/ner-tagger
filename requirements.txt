@@ -4,3 +4,4 @@ datasets
 torch>=2.0.0
 accelerate
 scikit-learn
+tabulate
