@@ -1,5 +1,5 @@
 
-# ner-tagger
+#  NER Tagging with Transformer Models
 An implementation of a named entity recognition system through fine-tuning transformer-based models.
 
 This project provides an easy-to-use framework for training and evaluating NER systems using the "Babelscape/multinerd" dataset. 
@@ -18,7 +18,7 @@ git clone https://github.com/MurathanKurfali/ner-tagger.git
 cd ner-tagger
 ```
 
-### 2. Create and Activate a Virtual Environment
+### 2. Setting Up Your NER Tagging Environment
 
 Create a Python virtual environment:
 
@@ -39,7 +39,7 @@ You can install all the needed packages using pip:
 pip install -r requirements.txt
 ```
 
-## Running
+## Guide: Dataset Preparation and Model Fine-Tuning
 
 ### 1) Preparing the Dataset
 
@@ -79,7 +79,7 @@ This script automatically fine-tunes the target model multiple times with differ
 e.g ./run.sh "a" "bert-base-cased" "False" 10
 ```
 ??? evaluate!
-### Example run
+### Quick Start Example
 
 The following example demonstrates the preparation of the dataset with the tag set "A," followed by running the main script with the default parameters.
 
@@ -88,7 +88,7 @@ python prepare_dataset.py --tag-set "a"
 ./run.sh "a" "bert-base-cased" "False"
 ```
 
-### 3) Results
+### 3) Evaluation
 
 I present the results of the bert-base-cased model and Xlnet-base-cased model on both systems, averaged over 4 runs.
 
