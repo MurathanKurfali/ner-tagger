@@ -377,10 +377,13 @@ def main():
         # This helps in addressing class imbalance by assigning different weights to each class.
         # The weights are calculated automatically based on the frequency of each class in the training data.
         # Weights are inversely proportional to the frequencies, encouraging the model to pay more attention to less common tags.
+        from collections import Counter
 
         class_weights = class_weight.compute_class_weight(class_weight='balanced',
                                                           classes=label_list,
                                                           y=all_labels)
+        # normalize the weights
+        class_weights = class_weights / class_weights.sum()
         class_weights = torch.Tensor(class_weights).to(training_args.device)
 
         # Print class weights for verification
