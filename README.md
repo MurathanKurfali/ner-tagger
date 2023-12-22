@@ -25,9 +25,7 @@ Create a Python virtual environment:
 ```bash
 python -m venv ner_tagger_env
 ```
-
 Activate the virtual environment:
-
 - On Windows:
   ```bash
   ner_tagger_env\Scripts\activate
@@ -83,3 +81,12 @@ This script automatically fine-tunes the target model four times  with different
 ```bash
 e.g ./run.sh "a" "bert-base-cased" "False"
 ```
+
+Trial scores
+
+| Metric | ANIM | BIO | CEL | DIS | EVE | FOOD | INST | LOC | MEDIA | MYTH | ORG | PER | PLANT | TIME | VEHI | overall |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Precision | 0.724 | 0.420 | 0.757 | 0.743 | 0.952 | 0.657 | 0.688 | 0.995 | 0.954 | 0.771 | 0.977 | 0.993 | 0.631 | 0.826 | 0.829 | 0.939 |
+| Recall | 0.781 | 0.812 | 0.829 | 0.795 | 0.976 | 0.693 | 0.792 | 0.994 | 0.974 | 0.828 | 0.984 | 0.995 | 0.738 | 0.839 | 0.906 | 0.955 |
+| F1 | 0.751 | 0.553 | 0.791 | 0.768 | 0.964 | 0.674 | 0.732 | 0.995 | 0.964 | 0.798 | 0.981 | 0.994 | 0.680 | 0.833 | 0.866 | 0.947 |
+Process finished with exit code 0
