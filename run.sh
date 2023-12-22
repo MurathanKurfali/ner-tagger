@@ -57,10 +57,3 @@ for (( i = 0; i < run_count; i++ )); do
         --save_steps 1000 \
         --eval_steps 1000
 done
-
-
-echo "Training is done. The average performance across ${run_count} will be calculated next.
-        The results will be saved in system-${system_type}_${bert_name}_${run_count}.md"
-
-python scripts/evaluate_predictions.py "saved_models" ${bert_name}
-

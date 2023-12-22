@@ -79,12 +79,12 @@ e.g ./run.sh "a" "bert-base-cased" "False" 10
 ```
 
 ### 3) Evaluation
-The performance of the each fine-tuning run is saved in the output_dir (e.g. see saved_models/system_a/<bert-name>_<seed>/predict_results.json). However, in order to
-calculate the overall performance across runs, you can simply run the evaluate_predictions.py
+The performance of each fine-tuning run is saved in output_dir (e.g., see saved_models/system_a/<bert-name>_<seed>/predict_results.json). However, to calculate the overall performance across runs, you can simply run the evaluate_predictions.py script:
 ```bash
-python scripts/evaluate_predictions.py "saved_models" <data_dir> <target-model> 
+python scripts/evaluate_predictions.py "saved_models" <data_dir> <target-model> [<output-format>]
 ```
-The script will calculate precision, recall and F1-score for each tag and save the results as a Markdown table (see next section for an example.)
+This script will calculate precision, recall, and F1-score for each tag and, by default, save the results as an HTML table. However, you have the option to save the results in CSV, HTML, or Markdown formats.
+
 
 ### Quick Start Example
 
@@ -103,35 +103,19 @@ averaged over 4 runs.
 
 ### bert-base-cased
 #### System A
-
-|         |   precision |   recall |       f1 |   number |   accuracy |
-|:--------|------------:|---------:|---------:|---------:|-----------:|
-| ANIM    |    0.730958 | 0.778367 | 0.753792 |     3208 | nan        |
-| BIO     |    0.42372  | 0.75     | 0.538377 |       16 | nan        |
-| CEL     |    0.748029 | 0.829268 | 0.786287 |       82 | nan        |
-| DIS     |    0.744328 | 0.796443 | 0.769469 |     1518 | nan        |
-| EVE     |    0.954162 | 0.975142 | 0.964524 |      704 | nan        |
-| FOOD    |    0.653681 | 0.689488 | 0.671099 |     1132 | nan        |
-| INST    |    0.688988 | 0.770833 | 0.725046 |       24 | nan        |
-| LOC     |    0.994802 | 0.994677 | 0.994739 |    24048 | nan        |
-| MEDIA   |    0.962849 | 0.972162 | 0.967441 |      916 | nan        |
-| MYTH    |    0.796495 | 0.84375  | 0.81867  |       64 | nan        |
-| ORG     |    0.979856 | 0.984436 | 0.982138 |     6618 | nan        |
-| PER     |    0.993224 | 0.995204 | 0.994213 |    10530 | nan        |
-| PLANT   |    0.635877 | 0.730425 | 0.679704 |     1788 | nan        |
-| TIME    |    0.826381 | 0.846886 | 0.836433 |      578 | nan        |
-| VEHI    |    0.862262 | 0.921875 | 0.890858 |       64 | nan        |
-| overall |    0.941031 | 0.955059 | 0.94799  |      nan |   0.990666 |
+|           |        ANIM |       BIO |       CEL |         DIS |        EVE |        FOOD |      INST |          LOC |      MEDIA |      MYTH |         ORG |          PER |       PLANT |       TIME |      VEHI |    overall |
+|:----------|------------:|----------:|----------:|------------:|-----------:|------------:|----------:|-------------:|-----------:|----------:|------------:|-------------:|------------:|-----------:|----------:|-----------:|
+| precision |    0.730958 |  0.42372  |  0.748029 |    0.744328 |   0.954162 |    0.653681 |  0.688988 |     0.994802 |   0.962849 |  0.796495 |    0.979856 |     0.993224 |    0.635877 |   0.826381 |  0.862262 |   0.941031 |
+| recall    |    0.778367 |  0.75     |  0.829268 |    0.796443 |   0.975142 |    0.689488 |  0.770833 |     0.994677 |   0.972162 |  0.84375  |    0.984436 |     0.995204 |    0.730425 |   0.846886 |  0.921875 |   0.955059 |
+| f1        |    0.753792 |  0.538377 |  0.786287 |    0.769469 |   0.964524 |    0.671099 |  0.725046 |     0.994739 |   0.967441 |  0.81867  |    0.982138 |     0.994213 |    0.679704 |   0.836433 |  0.890858 |   0.94799  |
+| number    | 3208        | 16        | 82        | 1518        | 704        | 1132        | 24        | 24048        | 916        | 64        | 6618        | 10530        | 1788        | 578        | 64        | nan        |
 #### System B
-
-|         |   precision |   recall |       f1 |   number |   accuracy |
-|:--------|------------:|---------:|---------:|---------:|-----------:|
-| ANIM    |    0.731486 | 0.769483 | 0.749956 |     3208 | nan        |
-| DIS     |    0.751412 | 0.784914 | 0.767694 |     1518 | nan        |
-| LOC     |    0.994121 | 0.994906 | 0.994513 |    24048 | nan        |
-| ORG     |    0.98054  | 0.98217  | 0.981354 |     6618 | nan        |
-| PER     |    0.993268 | 0.994682 | 0.993974 |    10530 | nan        |
-| overall |    0.964451 | 0.97033  | 0.967381 |      nan |   0.994446 |
+|           |        ANIM |         DIS |          LOC |         ORG |          PER |    overall |
+|:----------|------------:|------------:|-------------:|------------:|-------------:|-----------:|
+| precision |    0.731486 |    0.751412 |     0.994121 |    0.98054  |     0.993268 |   0.964451 |
+| recall    |    0.769483 |    0.784914 |     0.994906 |    0.98217  |     0.994682 |   0.97033  |
+| f1        |    0.749956 |    0.767694 |     0.994513 |    0.981354 |     0.993974 |   0.967381 |
+| number    | 3208        | 1518        | 24048        | 6618        | 10530        | nan        |
 ### xlnet-base-cased
 #### System A
 
