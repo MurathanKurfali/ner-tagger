@@ -7,33 +7,22 @@ This project provides an easy-to-use framework for training and evaluating NER s
 
 ## Getting Started
 
-To get started with this project, follow these steps:
+To get started with this project, follow these steps.
 
-#### 1. Clone the Repository
-Clone the repository to your local machine:
-
+1) Clone the repository to your local machine:
 ```bash
 git clone https://github.com/MurathanKurfali/ner-tagger.git
 cd ner-tagger
 ```
-
-#### 2. Setting Up Your NER Tagging Environment
-
-Create a Python virtual environment:
-
+2) Create a Python virtual environment:
 ```bash
 python -m venv ner_tagger_env
 ```
-Activate the virtual environment:
+3) Activate the virtual environment:
   ```bash
   source ner_tagger_env/bin/activate
   ```
-
-### Install the Requirements
-
-This project requires Python 3.6 or later, along with the several packages.
-You can install all the needed packages using pip:
-
+4) Install the requirements. The dependencies can be installed using pip:
 ```bash
 pip install -r requirements.txt
 ```
@@ -76,6 +65,8 @@ This script fine-tunes the target model multiple times with different seeds for 
 ```bash
 e.g ./run.sh --system-type 'a' --bert-name 'bert-base-cased' --use-weighted-loss 'true'
 ```
+By default, the batch size is set to 16, learning rate to 5e-5 and the validation metric used is the overall F1 score. The model is evaluated on the development set at every 1,000 steps, with the best model being selected based on its performance on the development set.
+
 **!)** Using weighted loss is a common strategy to address the data imbalance issue. However, in my initial experiments, implementing weighted loss did not yield an improvement in performance. Therefore, you can safely ignore that option for the time being.
 
 ### 3) Evaluation
@@ -99,7 +90,8 @@ The commands above will prepare the dataset for System A and fine-tune the bert-
 ### 4) Results
 
 Below are the results for both configurations using bert-base-cased, roberta-base, and xlnet-base-cased models. These results are averaged over four runs and include both the entire test set and only the unseen (token, tag) pairs.
-## 4.1 Bert-base-cased
+The experiments were conducted on four A40 GPUs, each with an effective batch size of 64. Fine-tuning runs for the Bert and Roberta models took approximately 50 minutes, while those for the Xlnet model required around 70 minutes. Model selection was based on the 'f1_overall' performance metric on the development set, with evaluations conducted at intervals of every 1,000 steps.
+
 ### 4.1.1 On Test Set
 #### 4.1.1.1 System A
 |           |        ANIM |       BIO |       CEL |         DIS |        EVE |        FOOD |      INST |          LOC |      MEDIA |      MYTH |         ORG |          PER |       PLANT |       TIME |      VEHI |    overall |

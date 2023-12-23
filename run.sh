@@ -5,21 +5,21 @@ Fine-tune a transformer model for a specific task.
 
 Options:
     --system-type        Type of the system to be used. (required)
-    --bert-name          Name of the BERT model to be fine-tuned. (required)
+    --model-name          Name of the BERT model to be fine-tuned. (required)
     --use-weighted-loss  Flag to activate weighted loss during training. Set to 'true' or '1' to enable. (default=False)
     --data-dir           Directory for data. (default=data)
     --run-count          Number of fine-tuning executions with different seeds. (default=4)
     -h                   Show this help message and exit.
 
-Minimal usage: $0 --system-type <system-name> --bert-name <target-model> --use-weighted-loss <loss_choice>
-Example: $0 --system-type 'a' --bert-name 'bert-base-cased' --use-weighted-loss 'true'
+Minimal usage: $0 --system-type <system-name> --model-name <target-model> --use-weighted-loss <loss_choice>
+Example: $0 --system-type 'a' --model-name 'bert-base-cased' --use-weighted-loss 'true'
 "
 
 # Default values
 data_dir="data"
 run_count=4
 system_type=""
-bert_name=""
+model_name=""
 use_weighted_loss="False"
 
 # Display usage if no arguments provided
@@ -38,8 +38,8 @@ while [[ $# -gt 0 ]]; do
             system_type="$2"
             shift 2
             ;;
-        --bert-name)
-            bert_name="$2"
+        --model-name)
+            model_name="$2"
             shift 2
             ;;
         --use-weighted-loss)
@@ -63,7 +63,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Check for mandatory arguments
-if [ -z "$system_type" ] || [ -z "$bert_name" ]; then
+if [ -z "$system_type" ] || [ -z "$model_name" ]; then
     echo "Error: Missing required arguments."
     printf "${usage}"
     exit 1
@@ -75,12 +75,12 @@ for (( i = 0; i < run_count; i++ )); do
   echo "Run number $((i+1)) of $run_count"
   echo "Seed: ${seed} ----"
   python -u scripts/run_ner.py \
-        --model_name_or_path "${bert_name}" \
+        --model_name_or_path "${model_name}" \
         --task_name "ner" \
         --train_file "${data_dir}/system_${system_type}/train.json" \
         --validation_file "${data_dir}/system_${system_type}/validation.json" \
         --test_file "${data_dir}/system_${system_type}/test.json" \
-        --output_dir "saved_models/system_${system_type}/${bert_name}_${seed}" \
+        --output_dir "saved_models/system_${system_type}/${model_name}_${seed}" \
         --text_column_name "tokens" \
         --label_column_name "ner_tags" \
         --per_device_train_batch_size 16 \
