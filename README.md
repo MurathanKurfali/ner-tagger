@@ -91,7 +91,7 @@ The commands above will prepare the dataset for System A and fine-tune the bert-
 
 Below are the results for both configurations using bert-base-cased, roberta-base, and xlnet-base-cased models. These results are averaged over four runs and include both the entire test set and only the unseen (token, tag) pairs.
 The experiments were conducted on four A40 GPUs, each with an effective batch size of 64. Fine-tuning runs for the Bert and Roberta models took approximately 50 minutes, while those for the Xlnet model required around 70 minutes. Model selection was based on the 'f1_overall' performance metric on the development set, with evaluations conducted at intervals of every 1,000 steps.
-
+## 4.1 Bert-base-cased
 ### 4.1.1 On Test Set
 #### 4.1.1.1 System A
 |           |        ANIM |       BIO |       CEL |         DIS |        EVE |        FOOD |      INST |          LOC |      MEDIA |      MYTH |         ORG |          PER |       PLANT |       TIME |      VEHI |    overall |
