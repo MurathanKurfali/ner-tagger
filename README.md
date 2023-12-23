@@ -108,7 +108,7 @@ The experiments were conducted on four A40 GPUs, each with an effective batch si
 | f1        |    0.749956 |    0.767694 |     0.994513 |    0.981354 |     0.993974 |   0.967381 |
 | number    | 3208        | 1518        | 24048        | 6618        | 10530        | nan        |
 
-### 4.1.2 Only on the unseen (token,tag) Pairs
+### 4.1.2 Only on the unseen <token, tag> pairs
 ##### 4.1.2.1 System A
 
 |           |       ANIM |      BIO |      CEL |        DIS |        EVE |       FOOD |      INST |         LOC |      MEDIA |      MYTH |         ORG |         PER |      PLANT |       TIME |      VEHI |    overall |
@@ -143,7 +143,7 @@ The experiments were conducted on four A40 GPUs, each with an effective batch si
 | f1        |    0.758973 |    0.782517 |     0.994562 |    0.979717 |     0.99419  |   0.96816  |
 | number    | 3208        | 1518        | 24048        | 6618        | 10530        | nan        |
 
-### 4.2.2. Only on the unseen (token,tag) Pairs
+### 4.2.2. Only on the unseen <token, tag> pairs
 #### 4.2.2.1 System A
 
 |           |       ANIM |      BIO |    CEL |        DIS |        EVE |       FOOD |      INST |         LOC |      MEDIA |      MYTH |         ORG |         PER |      PLANT |       TIME |      VEHI |    overall |
@@ -180,7 +180,7 @@ The experiments were conducted on four A40 GPUs, each with an effective batch si
 | f1        |    0.751444 |    0.775028 |     0.995018 |    0.982098 |     0.994995 |   0.968218 |
 | number    | 3208        | 1518        | 24048        | 6618        | 10530        | nan        |
 
-### 4.3.2 Only on the unseen (token,tag) Pairs
+### 4.3.2 Only on the unseen <token, tag> pairs
 #### 4.3.2.1 System A
 |           |       ANIM |      BIO |      CEL |        DIS |        EVE |       FOOD |      INST |         LOC |      MEDIA |      MYTH |         ORG |         PER |      PLANT |       TIME |      VEHI |    overall |
 |:----------|-----------:|---------:|---------:|-----------:|-----------:|-----------:|----------:|------------:|-----------:|----------:|------------:|------------:|-----------:|-----------:|----------:|-----------:|
