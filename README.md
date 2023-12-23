@@ -81,7 +81,7 @@ This script calculates precision, recall, and F1-score for each tag. Additionall
 The following example demonstrates the preparation of the dataset with the tag set "A," followed by running the main script with the default parameters.
 
 ```bash
-python prepare_dataset.py --tag-set "a"
+python scripts/prepare_dataset.py --tag-set "a"
 ./run.sh --system-type 'a' --bert-name 'bert-base-cased'
 python scripts/evaluate_predictions.py "saved_models" "data" True "bert-base-cased" 
 ```
