@@ -63,7 +63,7 @@ run.sh --system-type <system-name> --bert-name <target-model> --use-weighted-los
 ```
 This script fine-tunes the target model multiple times with different seeds for robust evaluation. Use the --data-dir parameter to specify the data directory; it defaults to 'data' if not provided. (**Remember to set this parameter if a non-default output directory is used in the prepare_dataset script.**) Specify the --system-type and --bert-name parameters with appropriate values for your experiment. The --use-weighted-loss parameter is optional and can be set to activate weighted loss during training. The --run-count parameter allows setting the number of runs, defaulting to 4 if not provided.
 ```bash
-e.g ./run.sh --system-type 'a' --bert-name 'bert-base-cased' --use-weighted-loss 'true'
+./run.sh --system-type 'a' --bert-name 'bert-base-cased' --use-weighted-loss 'true'
 ```
 By default, the batch size is set to 16, learning rate to 5e-5 and the validation metric used is the overall F1 score. The model is evaluated on the development set at every 1,000 steps, with the best model being selected based on its performance on the development set.
 
