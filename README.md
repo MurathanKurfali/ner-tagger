@@ -70,13 +70,13 @@ Please note that the script is tailored to the multinerd dataset. However, it is
 To fine-tune the model with the default parameters, simply call the `run.sh` script:
 
 ```bash
-./run.sh <system-name> <target-model> <loss_choice> [<data-dir>] [<number-of-runs>]
+run.sh --system-type <system-name> --bert-name <target-model> --use-weighted-loss <loss_choice>
 ```
-This script automatically fine-tunes the target model multiple times with different seeds for robust evaluation. The data directory is an optional fourth argument, with a default value of "data." (**Do not forget to set this variable if you use a non-default output_dir in the prepare_dataset script.**) Replace <system-name>, <target-model>, and <loss_choice> with appropriate values for your experiment. The number of runs can be optionally set by providing it as the fifth argument. If no fifth argument is provided, the script defaults to running 4 times.
-
+This script fine-tunes the target model multiple times with different seeds for robust evaluation. Use the --data-dir parameter to specify the data directory; it defaults to 'data' if not provided. (**Remember to set this parameter if a non-default output directory is used in the prepare_dataset script.**) Specify the --system-type and --bert-name parameters with appropriate values for your experiment. The --use-weighted-loss parameter is optional and can be set to activate weighted loss during training. The --run-count parameter allows setting the number of runs, defaulting to 4 if not provided.
 ```bash
-e.g ./run.sh "a" "bert-base-cased" "False" 10
+e.g ./run.sh --system-type 'a' --bert-name 'bert-base-cased' --use-weighted-loss 'true'
 ```
+**!)** Using weighted loss is a common strategy to address the data imbalance issue. However, in my initial experiments, implementing weighted loss did not yield an improvement in performance. Therefore, you can safely ignore that option for the time being.
 
 ### 3) Evaluation
 The performance of each fine-tuning run is saved in output_dir (e.g., see saved_models/system_a/<bert-name>_<seed>/predict_results.json). However, to calculate the overall performance across runs, you can simply run the evaluate_predictions.py script:
@@ -91,9 +91,10 @@ The following example demonstrates the preparation of the dataset with the tag s
 
 ```bash
 python prepare_dataset.py --tag-set "a"
-./run.sh "a" "bert-base-cased" "False"
+./run.sh --system-type 'a' --bert-name 'bert-base-cased'
 python scripts/evaluate_predictions.py "saved_models" "data" True "bert-base-cased" 
 ```
+The commands above will prepare the dataset for System A and fine-tune the bert-base-cased model on this data four times. Then, it will evaluate the model's performance across these runs, using exclusively the unseen (token, tag) pairs in the test set.
 
 ### 4) Results
 

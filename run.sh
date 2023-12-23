@@ -1,29 +1,74 @@
 #!/bin/bash
 
-system_type=$1
+usage="Usage: $0 [OPTIONS]
+Fine-tune a transformer model for a specific task.
 
-# The name of the model to be fine-tuned.
-bert_name=$2
+Options:
+    --system-type        Type of the system to be used. (required)
+    --bert-name          Name of the BERT model to be fine-tuned. (required)
+    --use-weighted-loss  Flag to activate weighted loss during training. Set to 'true' or '1' to enable. (default=False)
+    --data-dir           Directory for data. (default=data)
+    --run-count          Number of fine-tuning executions with different seeds. (default=4)
+    -h                   Show this help message and exit.
 
-# A flag to activate weighted loss during training. Set to 'true' or '1' to enable.
-use_weighted_loss=$3
+Minimal usage: $0 --system-type <system-name> --bert-name <target-model> --use-weighted-loss <loss_choice>
+Example: $0 --system-type 'a' --bert-name 'bert-base-cased' --use-weighted-loss 'true'
+"
 
-if [ "$#" -eq 5 ]; then
-    data_dir=$4
-    # Specifies the number of distinct fine-tuning executions to perform.
-    # Each execution is initiated with a different seed to account for fluctuations in results.
-    run_count=$5
-elif [ "$#" -eq 4 ]; then
-    data_dir=$4
-    run_count=4
-elif [ "$#" -eq 3 ]; then
-    data_dir="data"
-    run_count=4
-else
-    echo "Error: Invalid number of arguments."
-    echo "Usage: $0 <system-name> <target-model> <loss_choice> [data_dir] [run_count]"
+# Default values
+data_dir="data"
+run_count=4
+system_type=""
+bert_name=""
+use_weighted_loss="False"
+
+# Display usage if no arguments provided
+if [[ $# -eq 0 ]]; then
+    printf "${usage}"
     exit 1
 fi
+
+# Parse named arguments
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h) printf "$usage"
+            exit 0
+            ;;
+        --system-type)
+            system_type="$2"
+            shift 2
+            ;;
+        --bert-name)
+            bert_name="$2"
+            shift 2
+            ;;
+        --use-weighted-loss)
+            use_weighted_loss="$2"
+            shift 2
+            ;;
+        --data-dir)
+            data_dir="$2"
+            shift 2
+            ;;
+        --run-count)
+            run_count="$2"
+            shift 2
+            ;;
+        *)
+            echo "Invalid argument: $1"
+            printf "${usage}"
+            exit 1
+            ;;
+    esac
+done
+
+# Check for mandatory arguments
+if [ -z "$system_type" ] || [ -z "$bert_name" ]; then
+    echo "Error: Missing required arguments."
+    printf "${usage}"
+    exit 1
+fi
+
 
 for (( i = 0; i < run_count; i++ )); do
   seed=$(( RANDOM % 100001 ))
